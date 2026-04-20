@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Daniel_Tech — Portail de jeux web indépendants. Jeux gratuits, téléchargeables, jouables en ligne.">
+  <title>Game Portal</title>
+  <link rel="stylesheet" href="portal.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── BOOT ── -->
+<div id="boot">
+  <div class="boot-logo">DANIEL<em>_TECH</em></div>
+  <div class="boot-sub">GAME PORTAL v3.0 — INITIALISATION</div>
+  <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+  <div class="boot-msg">CHARGEMENT DES JEUX...</div>
+</div>
+
+<!-- Stars canvas -->
+<canvas id="stars"></canvas>
+
+<!-- ── NAVBAR ── -->
+<nav class="z1">
+  <div class="logo">DANIEL<em>_TECH</em><span class="logo-dot"></span></div>
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="Chercher un jeu..." autocomplete="off">
+  </div>
+  <div class="nav-end">
+    <span class="nav-count" id="nav-count"></span>
+    <a href="tel:+24174085772" class="nav-contact">
+      <span class="nc-icon">📞</span>
+      <span class="nc-text">+241 74 085 772</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div id="hero" class="z1"></div>
+
+<!-- ── TICKER ── -->
+<div class="ticker z1">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- ── SECTION HEADER ── -->
+<div class="section-header z1">
+  <h2 class="section-title">▸ TOUS LES <em>JEUX</em></h2>
+  <div class="section-line"></div>
+</div>
+
+<!-- ── FILTERS ── -->
+<div class="filters z1">
+  <span class="filter-lbl">GENRE :</span>
+  <div id="tag-btns" style="display:contents"></div>
+  <span class="filter-count" id="count"></span>
+</div>
+
+<!-- ── CATALOG ── -->
+<section class="catalog z1">
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ── CONTACT ── -->
+<div class="contact-section z1">
+  <div class="contact-left">
+    <div class="contact-tag">◆ CONTACTEZ LE DÉVELOPPEUR</div>
+    <div class="contact-title">Daniel_Tech</div>
+    <div class="contact-desc">Un projet ? Un bug ? Une idée de collab ? Contacte-moi directement.</div>
+  </div>
+  <div class="contact-actions">
+    <a href="tel:+24174085772" class="btn btn-tel">📞 +241 74 085 772</a>
+    <a href="https://wa.me/24174085772" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="z1">
+  <div>
+    <div class="footer-logo">DANIEL<em>_TECH</em></div>
+    <div class="footer-tag">Développeur de jeux web indépendants</div>
+    <a href="tel:+24174085772" class="footer-phone">📞 +241 74 085 772</a>
+    <div class="footer-copy">© 2026 Daniel_Tech · Tous droits réservés · Jeux 100% gratuits</div>
+  </div>
+  <div class="footer-links">
+    <a href="#top">↑ Haut de page</a>
+    <a href="tel:+24174085772">📞 Appeler</a>
+    <a href="https://wa.me/24174085772" target="_blank">💬 WhatsApp</a>
+    <a id="footer-count"></a>
+  </div>
+</footer>
+
+<!-- ── YOUTUBE MODAL ── -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="yt-dot"></div>
+      <div>
+        <div class="m-title" id="m-title">Trailer</div>
+        <div class="m-sub">YouTube · Bande-annonce officielle</div>
+      </div>
+      <button class="close-btn" id="close-btn" title="Fermer (Echap)">✕</button>
+    </div>
+    <div class="video-wrap">
+      <iframe id="yt-frame" src=""
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// ╔═══════════════════════════════════════════════════╗
+// ║  ⚙️  CONFIGURATION — DANIEL_TECH GAME PORTAL     ║
+// ║  Pour ajouter un jeu : copie un bloc dans GAMES[] ║
+// ╚═══════════════════════════════════════════════════╝
+
+const GAMES = [
+  {
+    id:          'stellar-assault',
+    title:       'STELLAR ASSAULT',
+    subtitle:    '20 NIVEAUX · 6 BOSS · MULTIJOUEUR',
+    description: 'Shooter spatial frénétique en 20 niveaux progressifs. 4 types d\'ennemis, 6 boss épiques dont ULTIMA le boss final. Système de combo x8, power-ups, tir triple, bouclier et bombes.',
+    tags:        ['Action', 'Shooter', 'Espace', 'Arcade'],
+    color:       '#00ffcc',
+    colorBg:     'linear-gradient(135deg,#001814 0%,#003828 55%,#001824 100%)',
+    icon:        '🚀',
+    thumbnail:   null,
+    youtubeId:   null,
+    downloadUrl: 'stellar-assault.zip',
+    playUrl:     'stellar-assault/index.html',
+    version:     'v2.0',
+    size:        '42 KB',
+    releaseDate: '2025',
+    featured:    true,
+    isNew:       true,
+    downloads:   0,
+  },
+
+  // ── COMING SOON (exemples — décommente pour activer) ───────
+  // {
+  //   id:          'neon-racer',
+  //   title:       'NEON RACER',
+  //   subtitle:    'BIENTÔT',
+  //   description: 'Course de néon futuriste. Piste procédurale infinie, 8 véhicules.',
+  //   tags:        ['Course', 'Action'],
+  //   color:       '#b020ff',
+  //   colorBg:     'linear-gradient(135deg,#100020,#200040,#100030)',
+  //   icon:        '🏎️',
+  //   thumbnail:   null,
+  //   downloadUrl: null,
+  //   playUrl:     null,
+  //   comingSoon:  true,
+  //   version:     '—',
+  //   releaseDate: '2026',
+  //   featured:    false,
+  //   isNew:       false,
+  //   downloads:   0,
+  // },
+];
+
+// ── Tag colors ──────────────────────────────────────────────
+const TAG_STYLE = {
+  'Action':    'color:#ff3d6e;border-color:rgba(255,61,110,.35);background:rgba(255,61,110,.08)',
+  'Shooter':   'color:#00ffcc;border-color:rgba(0,255,204,.35);background:rgba(0,255,204,.08)',
+  'Espace':    'color:#4488ff;border-color:rgba(68,136,255,.35);background:rgba(68,136,255,.08)',
+  'Arcade':    'color:#ff8c00;border-color:rgba(255,140,0,.35);background:rgba(255,140,0,.08)',
+  'Platformer':'color:#b44bff;border-color:rgba(180,75,255,.35);background:rgba(180,75,255,.08)',
+  'Aventure':  'color:#ffdd33;border-color:rgba(255,221,51,.35);background:rgba(255,221,51,.08)',
+  'RPG':       'color:#c060ff;border-color:rgba(192,96,255,.35);background:rgba(192,96,255,.08)',
+  'Puzzle':    'color:#00c896;border-color:rgba(0,200,150,.35);background:rgba(0,200,150,.08)',
+  'Course':    'color:#ff8c00;border-color:rgba(255,140,0,.35);background:rgba(255,140,0,.08)',
+  'Combat':    'color:#ff3d6e;border-color:rgba(255,61,110,.35);background:rgba(255,61,110,.08)',
+};
+function tagStyle(t) {
+  return TAG_STYLE[t] || 'color:#8090b8;border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04)';
+}
+
+// ── YouTube Modal ────────────────────────────────────────────
+const overlay = document.getElementById('overlay');
+const ytFrame  = document.getElementById('yt-frame');
+const mTitle   = document.getElementById('m-title');
+
+function openTrailer(youtubeId, title) {
+  mTitle.textContent = title + ' — Trailer Officiel';
+  ytFrame.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  overlay.classList.remove('open');
+  ytFrame.src = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('close-btn').onclick = closeModal;
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Download ─────────────────────────────────────────────────
+function downloadGame(id) {
+  const game = GAMES.find(g => g.id === id);
+  if (!game || !game.downloadUrl) return;
+  const btn = document.querySelector(`[data-dl="${id}"]`);
+  if (!btn) return;
+  const orig = btn.innerHTML;
+  btn.style.pointerEvents = 'none';
+  btn.innerHTML = '⏳ ...';
+  setTimeout(() => {
+    const a = document.createElement('a');
+    a.href = game.downloadUrl;
+    a.download = game.downloadUrl.split('/').pop();
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => {
+      btn.style.pointerEvents = '';
+      btn.innerHTML = orig;
+    }, 1400);
+  }, 750);
+}
+
+// ── Thumb HTML ───────────────────────────────────────────────
+function thumbHtml(g) {
+  const overlay = `<div class="thumb-overlay"></div><div class="thumb-title">${g.title}</div>`;
+  if (g.thumbnail) return `<img src="${g.thumbnail}" alt="${g.title}" loading="lazy">${overlay}`;
+  return `
+    <div class="thumb-grad" style="background:${g.colorBg||'linear-gradient(135deg,#040428,#0a0a3c)'}">
+      <span class="thumb-icon" style="color:${g.color||'#00ffcc'}">${g.icon||'🎮'}</span>
+    </div>${overlay}
+  `;
+}
+
+// ── Card HTML ────────────────────────────────────────────────
+function cardHtml(g, i) {
+  const hasDl   = !!g.downloadUrl;
+  const hasYt   = !!g.youtubeId;
+  const hasPlay = !!g.playUrl;
+  const soon    = !!g.comingSoon;
+  const tags    = g.tags.map(t => `<span class="tag" style="${tagStyle(t)}">${t}</span>`).join('');
+  const meta    = [
+    g.size        && `📦 ${g.size}`,
+    g.version     && `🏷 ${g.version}`,
+    g.releaseDate && `📅 ${g.releaseDate}`,
+  ].filter(Boolean).join(' &nbsp; ');
+
+  const comingOverlay = soon ? `
+    <div class="coming-overlay">
+      <div class="coming-label">BIENTÔT</div>
+      <div class="coming-dots"><span></span><span></span><span></span></div>
+    </div>
+  ` : '';
+
+  return `
+    <div class="card ${soon ? 'card-coming' : ''}"
+      data-id="${g.id}"
+      data-tags="${g.tags.join(',').toLowerCase()}"
+      data-title="${g.title.toLowerCase()} ${g.description.toLowerCase()}"
+      style="animation-delay:${i * 0.08}s">
+      <div class="thumb">
+        ${g.featured ? '<span class="badge badge-star">★ VEDETTE</span>' : ''}
+        ${g.isNew    ? '<span class="badge badge-new">NOUVEAU</span>' : ''}
+        ${soon       ? '<span class="badge badge-soon">COMING SOON</span>' : ''}
+        ${thumbHtml(g)}
+        ${comingOverlay}
+      </div>
+      <div class="card-body">
+        <div class="tags">${tags}</div>
+        <p class="card-desc">${g.description}</p>
+        <div class="meta">${meta}</div>
+      </div>
+      <div class="card-btns">
+        ${hasYt  ? `<button class="btn btn-yt btn-sm" onclick="openTrailer('${g.youtubeId}','${g.title}')">▶ Trailer</button>`
+                 : `<button class="btn btn-ghost btn-sm btn-off">▶ Trailer</button>`}
+        ${hasPlay ? `<a class="btn btn-ghost btn-sm" href="${g.playUrl}" target="_blank">🎮 Jouer</a>`
+                  : `<button class="btn btn-ghost btn-sm btn-off">🎮 Jouer</button>`}
+        ${hasDl   ? `<button class="btn btn-dl btn-sm" data-dl="${g.id}" onclick="downloadGame('${g.id}')">⬇ ZIP</button>`
+                  : `<button class="btn btn-dl btn-sm btn-off">⬇ ZIP</button>`}
+      </div>
+    </div>
+  `;
+}
+
+// ── Hero ─────────────────────────────────────────────────────
+function buildHero() {
+  const g = GAMES.find(f => f.featured) || GAMES[0];
+  if (!g) return;
+  const hasDl   = !!g.downloadUrl;
+  const hasYt   = !!g.youtubeId;
+  const hasPlay = !!g.playUrl;
+  document.getElementById('hero').innerHTML = `
+    <div class="hero">
+      <div class="hero-bg" style="background:${g.colorBg||'linear-gradient(135deg,#020012,#00150a,#060010)'}"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-beam"></div>
+      <div class="hero-glow-c" style="background:${g.color||'#00ffcc'}"></div>
+      <div class="hero-glow-c" style="background:var(--pink)"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-badge">★ JEU EN VEDETTE</span>
+          <span class="hero-eyebrow-line"></span>
+        </div>
+        <h1 class="hero-title">
+          <span class="glitch" data-text="${g.title}">${g.title}</span>
+        </h1>
+        <div class="hero-sub">${g.subtitle || ''}</div>
+        <p class="hero-desc">${g.description}</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hs-num">${GAMES.filter(x=>!x.comingSoon).length}</span>
+            <span class="hs-lbl">JEU${GAMES.filter(x=>!x.comingSoon).length>1?'X':''} DISPO</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hs-num">100%</span>
+            <span class="hs-lbl">GRATUIT</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hs-num">ZIP</span>
+            <span class="hs-lbl">TÉLÉCHARGEABLE</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          ${hasPlay ? `<a class="btn btn-play" href="${g.playUrl}" target="_blank">🎮 Jouer Maintenant</a>` : ''}
+          ${hasYt   ? `<button class="btn btn-yt" onclick="openTrailer('${g.youtubeId}','${g.title}')">▶ Voir le Trailer</button>` : ''}
+          ${hasDl   ? `<a class="btn btn-dl" href="${g.downloadUrl}" download>⬇ Télécharger ZIP ${g.size ? '('+g.size+')' : ''}</a>` : ''}
+          <a href="tel:+24174085772" class="btn btn-ghost">📞 Contact</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ── Ticker ───────────────────────────────────────────────────
+function buildTicker() {
+  const n = GAMES.filter(x=>!x.comingSoon).length;
+  const items = [
+    'DANIEL_TECH GAME PORTAL',
+    `${n} JEU${n>1?'X':''} DISPONIBLE${n>1?'S':''}`,
+    'JEUX WEB 100% GRATUITS',
+    'TÉLÉCHARGEMENT DIRECT ZIP',
+    'STELLAR ASSAULT — DISPONIBLE MAINTENANT',
+    '📞 +241 74 085 772',
+    'NOUVEAUX JEUX EN DÉVELOPPEMENT',
+    'DÉVELOPPÉ PAR DANIEL_TECH',
+  ];
+  const doubled = [...items, ...items];
+  document.getElementById('ticker').innerHTML = doubled.map(i => `<span>${i}</span>`).join('');
+}
+
+// ── Filters ──────────────────────────────────────────────────
+let activeTag = 'tous';
+
+function allTags() {
+  const s = new Set();
+  GAMES.forEach(g => g.tags.forEach(t => s.add(t)));
+  return ['Tous', ...Array.from(s).sort()];
+}
+
+function buildFilters() {
+  document.getElementById('tag-btns').innerHTML = allTags().map(t =>
+    `<button class="tag-btn ${t.toLowerCase() === activeTag ? 'on' : ''}"
+      onclick="setTag('${t.toLowerCase()}')">${t}</button>`
+  ).join('');
+}
+
+function setTag(tag) { activeTag = tag; buildFilters(); filterCards(); }
+
+function filterCards() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.card');
+  let n = 0;
+  cards.forEach(c => {
+    const tagMatch  = activeTag === 'tous' || c.dataset.tags.includes(activeTag);
+    const srchMatch = !q || c.dataset.title.includes(q) || c.dataset.tags.includes(q);
+    const show = tagMatch && srchMatch;
+    c.style.display = show ? '' : 'none';
+    if (show) n++;
+  });
+  document.getElementById('count').innerHTML = `<strong>${n}</strong> jeu${n > 1 ? 'x' : ''}`;
+  const grid = document.getElementById('grid');
+  const old  = grid.querySelector('.empty');
+  if (n === 0 && !old) {
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="empty">
+        <div class="e-icon">🔭</div>
+        <h3>Aucun jeu trouvé</h3>
+        <p>Essaie un autre filtre ou efface la recherche.</p>
+      </div>`);
+  } else if (n > 0 && old) old.remove();
+}
+
+// ── Stars ────────────────────────────────────────────────────
+function initStars() {
+  const cv  = document.getElementById('stars');
+  const ctx = cv.getContext('2d');
+  let W, H, stars;
+  function resize() {
+    W = cv.width  = innerWidth;
+    H = cv.height = innerHeight;
+    stars = Array.from({ length: 260 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.4 + 0.1,
+      a: Math.random() * 0.55 + 0.06,
+      s: Math.random() * 0.18 + 0.03,
+      c: Math.random() > 0.8 ? 0 : Math.random() > 0.5 ? 1 : 2,
+    }));
+  }
+  const COLORS = [
+    [210,220,240], [140,180,255], [255,200,200]
+  ];
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      s.y += s.s;
+      if (s.y > H) { s.y = -2; s.x = Math.random() * W; }
+      const [r,g,b] = COLORS[s.c];
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r},${g},${b},${s.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); window.addEventListener('resize', resize); draw();
+}
+
+// ── Init ─────────────────────────────────────────────────────
+function init() {
+  initStars();
+  buildHero();
+  buildTicker();
+  const grid = document.getElementById('grid');
+  grid.innerHTML = GAMES.map((g, i) => cardHtml(g, i)).join('');
+  buildFilters();
+  filterCards();
+  document.getElementById('search').addEventListener('input', filterCards);
+
+  const n = GAMES.filter(x => !x.comingSoon).length;
+  const label = `${n} jeu${n > 1 ? 'x' : ''}`;
+  document.getElementById('nav-count').textContent = label;
+  document.getElementById('footer-count').textContent = `${label} disponible${n > 1 ? 's' : ''}`;
+
+  // Boot screen dismiss
+  setTimeout(() => {
+    document.getElementById('boot').classList.add('hide');
+  }, 1200);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
